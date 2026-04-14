@@ -4,21 +4,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-- name: Stop and Disable NetworkManager
-  ansible.builtin.service:
+- name: Ensure NetworkManager is started and enabled
+  ansible.builtin.systemd:
     name: NetworkManager
-    state: stopped
-    enabled: false
-  register: configure_seapath_distro_centos_nm_stop
-
-- name: Start and Enable systemd-networkd
-  ansible.builtin.service:
-    name: systemd-networkd
     state: started
     enabled: true
-  register: configure_seapath_distro_centos_sd_start
+  register: configure_seapath_distro_centos_nm_start
 
-- name: Set need_reboot to true if any change was made
+- name: Set need_reboot to true if NetworkManager state changed
   ansible.builtin.set_fact:
     need_reboot: true # noqa: var-naming[no-role-prefix]
-  when: configure_seapath_distro_centos_nm_stop is changed or configure_seapath_distro_centos_sd_start is changed
+  when: configure_seapath_distro_centos_nm_start is changed
