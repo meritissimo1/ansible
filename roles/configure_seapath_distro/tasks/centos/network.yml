@@ -11,7 +11,7 @@
     enabled: true
   register: configure_seapath_distro_centos_nm_start
 
-- name: Set need_reboot to true if NetworkManager state changed
+- name: Set need_reboot to true if NetworkManager state changed # noqa: no-handler
   ansible.builtin.set_fact:
     need_reboot: true # noqa: var-naming[no-role-prefix]
   when: configure_seapath_distro_centos_nm_start is changed
